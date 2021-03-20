@@ -32,4 +32,7 @@
 *.app
 
 #TXT format
-*.txt
+CMakeLists.txt
+
+#Idea
+/.idea
