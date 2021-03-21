@@ -11,23 +11,32 @@ using namespace std;
 int main() {
     bool flag = true;
     int choose = 0, sugar = 0, cups = 7, attempts = 3, insertCups = 0;
-    double balance = 0.0, cash = 0, money = 0.0, moneyTakenOut = 0.0;
+    double balance = 0.50, cash, money = 0.0, moneyTakenOut = 0.0;
 
     while (true) {
+
         do {
             flag = true;
+
             if (cups == 0) {
                 cout << "WARNING! There are NO cups in the coffee machine." << endl;
             }
+
             cout << "           Balance: " << balance << " BYN" << endl;
             cout << "1. Espresso " << ESPRESSO_PRICE << " BYN\n" << "2. Cappuccino " << CAPPUCCINO_PRICE << " BYN\n"
                  << "3. Latte " << LATTE_PRICE << " BYN\n" << "4. Put money\n" << "5. Service\n" << endl;
             cout << "Input: ";
             cin >> choose;
+
         } while (choose < 1 or choose > 5);
         switch (choose) {
+
+
+
+
+
             case 1: //Espresso
-                while (cash != 0 or balance > ESPRESSO_PRICE) {
+                while (true) {
                     if (balance < ESPRESSO_PRICE) {
                         cout << "Not enough money!!! " << ESPRESSO_PRICE - balance << " BYN left.\n0 - Exit" << endl;
                         cout << endl;
@@ -56,9 +65,14 @@ int main() {
                     }
                 }
                 break;
+
+
+
+
+
             case 2: //Cappuccino
                 //the same code like for espresso
-                while (cash != 0 or balance > CAPPUCCINO_PRICE) {
+                while (true) {
                     if (balance < CAPPUCCINO_PRICE) {
                         cout << "Not enough money!!! " << CAPPUCCINO_PRICE - balance << " BYN left.\n0 - Exit" << endl;
                         cout << endl;
@@ -87,9 +101,14 @@ int main() {
                     }
                 }
                 break;
+
+
+
+
+
             case 3: //Latte
                 //the same code like for espresso
-                while (cash != 0 or balance > LATTE_PRICE) {
+                while (true) {
                     if (balance < CAPPUCCINO_PRICE) {
                         cout << "Not enough money!!! " << LATTE_PRICE - balance << " BYN left.\n0 - Exit" << endl;
                         cout << endl;
@@ -118,18 +137,30 @@ int main() {
                     }
                 }
                 break;
+
+
+
+
             case 4: //Put money
-                while (cash != 0) {
+                while (true) {
                     cout << "           Balance: " << balance << " BYN" << endl;
                     cout << "0 - Exit" << endl;
                     cout << endl;
                     cout << "Bill acceptor: ";
                     cin >> cash;
+                    if (cash == 0){
+                        break;
+                    }
                     balance += cash;
                 }
                 break;
+
+
+
+
             case 5: //Service
                 int input = 0;
+                flag = false;
                 while (input != PIN) {
                     if (attempts == 0) {
                         while (true) {
@@ -141,8 +172,12 @@ int main() {
                     cout << "Enter PIN (" << attempts << " attempts left): ";
                     cin >> input;
                     attempts--;
-                    while (flag) {
+                    if (input == PIN){
                         flag = true;
+                    }
+
+
+                    while (flag) {
                         do {
                             attempts = 3;
                             cout << "Service menu:" << endl;
