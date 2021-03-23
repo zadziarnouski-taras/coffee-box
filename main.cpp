@@ -1,8 +1,11 @@
 #include <iostream>
+#include "main.h"
 
 using namespace std;
 
 int main(){
+
+    calc2();
 
     cout << "Hello, World!!" << endl;
 
