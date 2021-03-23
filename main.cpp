@@ -10,5 +10,7 @@ int main(){
 
     cout << "by Taras" << endl;
 
+    cout << "By DM!" << endl;
+
     return 0;
 }
