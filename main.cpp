@@ -8,5 +8,7 @@ int main(){
 
     cout << "by Dm" << endl;
 
+    cout << "by Taras" << endl;
+
     return 0;
 }
