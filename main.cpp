@@ -10,5 +10,7 @@ int main(){
 
     cout << "by Taras" << endl;
 
+    cout << "BY TARAS!"<< endl;
+
     return 0;
 }
