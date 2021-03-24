@@ -5,13 +5,12 @@
 #define CAPPUCCINO_PRICE 2.5
 #define LATTE_PRICE 3.0
 #define PIN 1234
-#define SERVICE_NUMBER 5
 #define PIN_ATTEMPTS 3
 #define WARNING_CUPS_QUANTITY 3
 
 using namespace std;
 
-void printBalance(double balance);
+void printBalance(double balance, string string);
 
 void printWarningIfNoCups(int cups);
 
@@ -19,63 +18,63 @@ void printMenu();
 
 void pause();
 
+int inputNumber(int number);
 
-double inputNumber(double number, string action);
+double inputMaterials(double material, string action);
 
-double inputMaterials(double material, string action, string materialBalance);
-
-void printMaterialBalance(double material, string materialBalance);
-
-double installCurrentPrice(int choice);
+double installPrice(int choice);
 
 void transactPayment(double price, double &balance, double &balanceInMachine);
 
-void cupsReduction(int &cups);
-
-void giveCoffee(int cups);
+void giveCoffee();
 
 
 int main() {
     int choice = 0, cups = 3;
-    double balance = 5, currentPrice = 0, balanceInMachine = 0;
+    double balance = 5, price = 0, balanceInMachine = 0;
 
 
     while (true) {
         system("cls");
         printWarningIfNoCups(cups);
-        printBalance(balance);
+        printBalance(balance, "money");
         printMenu();
 
-        choice = inputNumber(choice, "Please, press the button: ");
+        choice = inputNumber(choice);
 
-        if (choice >= 1 and choice <= 3) {
-            currentPrice = installCurrentPrice(choice);
-
-            if (currentPrice > balance) {
+        if (0 < choice and choice < 4) {
+            price = installPrice(choice);
+            if (price > balance) {
                 cout << "Not enough money" << endl;
 //				Sleep(3000);
             } else {
-                transactPayment(currentPrice, balance, balanceInMachine);
-                giveCoffee(cups);
-                cupsReduction(cups);
+//                transactPayment(price, balance, balanceInMachine); //last version
+//                giveCoffee(cups);
+//                cupsReduction(cups);
+                transactPayment(price, balance, balanceInMachine);
+                if (cups > 0) {
+                    giveCoffee();
+                    cups--;
+                } else {}
             }
         } else if (choice == 4) {
-            balance = inputMaterials(balance, "Input money (0 for exit): ", "Balance: ");
-        } else if (choice == SERVICE_NUMBER) {
+            balance = inputMaterials(balance, "money");
+        } else if (choice == 5) {
             cout << "service" << endl;
-
-            pause();
         }
     }
 }
 
-void printBalance(double balance) {
-    cout << "Balance: " << balance << endl;
+void printBalance(double balance, string string) {     //I can't think of a name for the second variable. The function for money and cups
+    cout << "Balance " << string << ": " << balance << endl;
 }
 
 void printWarningIfNoCups(int cups) {
     if (cups == 0) {
-        cout << "*** Warning! No cups ***" << endl;
+        cout << "**********************************************************************" << endl;
+        cout << "*********************** Warning! NO cups. ****************************" << endl;
+        cout << "*** Do not order coffee, otherwise you will be wasting your money. ***" << endl;
+        cout << "**********************************************************************" << endl;
     }
 }
 
@@ -92,40 +91,31 @@ void pause() {
     system("pause");
 }
 
-
-double inputNumber(double number, string action) {
-    cout << action;
-
+int inputNumber(int number) {   //only for buttons
+    cout << "Please, press the button: ";
     cin >> number;
 
     return number;
 }
 
-double inputMaterials(double material, string action, string materialBalance) {
+double inputMaterials(double material, string action) {  //common function for money and cups
     double input = 0;
 
     while (true) {
-        printMaterialBalance(material, materialBalance);
-        input = inputNumber(input, action);
-
+        printBalance(material, action);
+        cout << "Please insert " << action << "(0 - Exit): ";
+        cin >> input;
         if (input == 0) {
             break;
         }
 
         material += input;
-        input = 0;
     }
 
     return material;
 }
 
-void printMaterialBalance(double material, string materialBalance) {
-    system("cls");
-
-    cout << materialBalance << material << endl;
-}
-
-double installCurrentPrice(int choice) {
+double installPrice(int choice) {
     switch (choice) {
         case 1:
             return ESPRESSO_PRICE;
@@ -143,18 +133,8 @@ void transactPayment(double price, double &balance, double &balanceInMachine) {
     balanceInMachine += price;
 }
 
-void cupsReduction(int &cups) {
-    if (cups > 0) cups -= 1;
-}
-
-void giveCoffee(int cups) //?
+void giveCoffee() //?
 {
-    if (cups > 0) {
-        cout << "*** Take your coffee! ***" << endl;
-        pause();
-    } else {
-        cout << "Ha-ha! Just spent money :(" << endl;
-//		Sleep(3000);
-    }
+    cout << "*** Take your coffee! ***" << endl;
+    pause();
 }
-
