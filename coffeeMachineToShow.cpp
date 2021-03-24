@@ -24,9 +24,11 @@ double inputMaterials(double material, string nameOfMaterial);
 
 double installPrice(int choice);
 
-void transactPayment(double price, double &balance, double &balanceInMachine);
+void transactPayment(double price, double& balance, double& balanceInMachine);
 
 void giveCoffee();
+
+void printPinMenu();
 
 
 int main() {
@@ -46,23 +48,35 @@ int main() {
             price = installPrice(choice);
             if (price > balance) {
                 cout << "Not enough money" << endl;
-				pause(); //Sleep(3000);
-            } else {
+                pause(); //Sleep(3000);
+            }
+            else {
                 transactPayment(price, balance, balanceInMachine);
                 if (cups > 0) {
                     giveCoffee();
                     cups--;
-                } else {}
+                }
+                else {}
             }
-        } else if (choice == 4) {
+        }
+        else if (choice == 4) {
             balance = inputMaterials(balance, "money");
-        } else if (choice == 5) {
-            cout << "service" << endl;
+        }
+        else if (choice == 5) {
+            system("cls");
+            printPinMenu();
+            choice = inputNumber(choice);
+            if (choice == 1) {
+                system("cls");
+                cout << "Enter PIN function";
+                pause();
+            }
+            else {}
         }
     }
 }
 
-void printBalance(double material, string nameOfMaterial) {   
+void printBalance(double material, string nameOfMaterial) {
     cout << "Balance of " << nameOfMaterial << ": " << material << endl;
 }
 
@@ -88,14 +102,14 @@ void pause() {
     system("pause");
 }
 
-int inputNumber(int number) {  
+int inputNumber(int number) {
     cout << "Please, press the button: ";
     cin >> number;
 
     return number;
 }
 
-double inputMaterials(double material, string nameOfMaterial) {  
+double inputMaterials(double material, string nameOfMaterial) {
     double input = 0;
 
     while (true) {
@@ -114,24 +128,29 @@ double inputMaterials(double material, string nameOfMaterial) {
 
 double installPrice(int choice) {
     switch (choice) {
-        case 1:
-            return ESPRESSO_PRICE;
-        case 2:
-            return CAPPUCCINO_PRICE;
-        case 3:
-            return LATTE_PRICE;
-        default:
-            break;
+    case 1:
+        return ESPRESSO_PRICE;
+    case 2:
+        return CAPPUCCINO_PRICE;
+    case 3:
+        return LATTE_PRICE;
+    default:
+        break;
     }
 }
 
-void transactPayment(double price, double &balance, double &balanceInMachine) {
+void transactPayment(double price, double& balance, double& balanceInMachine) {
     balance -= price;
     balanceInMachine += price;
 }
 
-void giveCoffee() 
+void giveCoffee()
 {
     cout << "*** Take your coffee! ***" << endl;
     pause();
+}
+
+void printPinMenu() {
+    cout << "1. Enter PIN." << endl;
+    cout << "0. Exit." << endl;
 }
