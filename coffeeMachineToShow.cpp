@@ -30,10 +30,13 @@ void giveCoffee();
 
 void printPinMenu();
 
+bool isPinRightEntered();
+
 
 int main() {
     int choice = 0, cups = 3;
     double balance = 5, price = 0, balanceInMachine = 0;
+    bool isPinEnteredSuccessfull = false;
 
 
     while (true) {
@@ -63,9 +66,13 @@ int main() {
             printPinMenu();
             choice = inputNumber(choice);
             if (choice == 1) {
-                system("cls");
-                cout << "Enter PIN function";
-                pause();
+                isPinEnteredSuccessfull = isPinRightEntered();
+
+                if (isPinEnteredSuccessfull) {
+                    //add service here
+                } else {
+                    //block the machine
+                }
             }
             else {}
         }
@@ -149,4 +156,24 @@ void giveCoffee()
 void printPinMenu() {
     cout << "1. Enter PIN." << endl;
     cout << "0. Exit." << endl;
+}
+
+bool isPinRightEntered()
+{
+    int pin = 0, counter = 0;
+    bool flag = false;
+
+    while (counter < 3) {
+        system("cls");
+
+        cout << "Attempts(s): " << PIN_ATTEMPTS - counter << endl;
+        cout << "Enter PIN: ";
+        cin >> pin;
+
+        if (pin == PIN) { flag = true; break; }
+
+        counter++;
+    }
+
+    return flag;
 }
