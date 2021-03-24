@@ -87,6 +87,8 @@ int main() {
                             transaction(balance, balance, moneyTakenOut);
 
                             cout << "Operation completed successfully !!! Money withdrawn: " << moneyTakenOut << " BYN" << endl;
+
+                            moneyTakenOut = 0;
                             pause();
                         } else if (choice == 4) {   //Exit
                             flagService = false;
@@ -109,7 +111,7 @@ int main() {
 }
 
 void printBalance(double material, string nameOfMaterial) {
-    cout << "Balance of " << nameOfMaterial << ": " << material << " BYN." << endl;
+    cout << "Balance of " << nameOfMaterial << ": " << material << endl;
 }
 
 void printWarningIfNoCups(int cups) {
