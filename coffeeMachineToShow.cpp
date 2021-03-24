@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void printBalance(double balance, string string);
+void printBalance(double material, string nameOfMaterial);
 
 void printWarningIfNoCups(int cups);
 
@@ -20,7 +20,7 @@ void pause();
 
 int inputNumber(int number);
 
-double inputMaterials(double material, string action);
+double inputMaterials(double material, string nameOfMaterial);
 
 double installPrice(int choice);
 
@@ -46,11 +46,8 @@ int main() {
             price = installPrice(choice);
             if (price > balance) {
                 cout << "Not enough money" << endl;
-//				Sleep(3000);
+				pause(); //Sleep(3000);
             } else {
-//                transactPayment(price, balance, balanceInMachine); //last version
-//                giveCoffee(cups);
-//                cupsReduction(cups);
                 transactPayment(price, balance, balanceInMachine);
                 if (cups > 0) {
                     giveCoffee();
@@ -65,8 +62,8 @@ int main() {
     }
 }
 
-void printBalance(double balance, string string) {     //I can't think of a name for the second variable. The function for money and cups
-    cout << "Balance " << string << ": " << balance << endl;
+void printBalance(double material, string nameOfMaterial) {   
+    cout << "Balance of " << nameOfMaterial << ": " << material << endl;
 }
 
 void printWarningIfNoCups(int cups) {
@@ -91,19 +88,19 @@ void pause() {
     system("pause");
 }
 
-int inputNumber(int number) {   //only for buttons
+int inputNumber(int number) {  
     cout << "Please, press the button: ";
     cin >> number;
 
     return number;
 }
 
-double inputMaterials(double material, string action) {  //common function for money and cups
+double inputMaterials(double material, string nameOfMaterial) {  
     double input = 0;
 
     while (true) {
-        printBalance(material, action);
-        cout << "Please insert " << action << "(0 - Exit): ";
+        printBalance(material, nameOfMaterial);
+        cout << "Please insert " << nameOfMaterial << "(0 - Exit): ";
         cin >> input;
         if (input == 0) {
             break;
@@ -133,7 +130,7 @@ void transactPayment(double price, double &balance, double &balanceInMachine) {
     balanceInMachine += price;
 }
 
-void giveCoffee() //?
+void giveCoffee() 
 {
     cout << "*** Take your coffee! ***" << endl;
     pause();
