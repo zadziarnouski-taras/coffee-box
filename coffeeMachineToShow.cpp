@@ -28,6 +28,8 @@ void transactPayment(double price, double &balance, double &balanceInMachine);
 
 void giveCoffee();
 
+void printPinMenu();
+
 
 int main() {
     int choice = 0, cups = 3;
@@ -57,7 +59,15 @@ int main() {
         } else if (choice == 4) {
             balance = inputMaterials(balance, "money");
         } else if (choice == 5) {
-            cout << "service" << endl;
+            system("cls");
+            printPinMenu();
+            choice = inputNumber(choice);
+            if (choice == 1) {
+                system("cls");
+                cout << "Enter PIN function";
+                pause();
+            }
+            else {}
         }
     }
 }
@@ -134,4 +144,9 @@ void giveCoffee()
 {
     cout << "*** Take your coffee! ***" << endl;
     pause();
+}
+
+void printPinMenu() {
+    cout << "1. Enter PIN." << endl;
+    cout << "0. Exit." << endl;
 }
