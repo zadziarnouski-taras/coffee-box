@@ -35,7 +35,7 @@ void printServiceMenu();
 
 int main() {
     int choice = 0, cups = 3;
-    double balance = 5, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
+    double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
     bool flagService;
 
 
@@ -77,12 +77,15 @@ int main() {
                         choice = inputNumber(choice);
 
                         if (choice == 1) {  //Money
+                            system("cls");
                             printBalance(balance + balanceInMachine, "money");
 
                             pause();
                         } else if (choice == 2) {   //Cups
+                            system("cls");
                             cups = inputMaterials(cups, "cups");  //max 700 pcs
                         } else if (choice == 3) {   //Withdraw money
+                            system("cls");
                             transaction(balanceInMachine, balanceInMachine, moneyTakenOut);
                             transaction(balance, balance, moneyTakenOut);
 
@@ -99,7 +102,7 @@ int main() {
                 } else {
                     while (true) {  //maybe one function like lockMachine();
                         int tmp;
-                        system("clr");
+                        system("cls");
                         cout << "The machine is locked after 3 attempts to enter the wrong pin...";
                         cin >> tmp;
                     }
@@ -147,6 +150,7 @@ double inputMaterials(double material, string nameOfMaterial) {
     double input = 0;
 
     while (true) {
+        system("cls");
         printBalance(material, nameOfMaterial);
 
         cout << "Please insert " << nameOfMaterial << "(0 - Exit): ";
@@ -195,8 +199,6 @@ bool isPinRightEntered() {
 
     while (counter < 3) {
         system("cls");
-
-        cout << "Number of password attempts: " << PIN_ATTEMPTS - counter << endl;
 
         pin = inputNumber(pin);
 
