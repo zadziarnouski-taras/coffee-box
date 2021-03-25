@@ -17,7 +17,7 @@ void printMenu();
 
 void pause();
 
-int inputNumber(int number);
+int inputNumber(int number, string word);
 
 double inputMaterials(double material, string nameOfMaterial);
 
@@ -33,19 +33,25 @@ bool isPinRightEntered();
 
 void printServiceMenu();
 
+void clearConsole();
+
+int inputPin(int pin);
+
+void lockMachine();
+
 int main() {
-    int choice = 0, cups = 3;
+    int choice = 0, cups = 3, pin = 0, counter = 3;
     double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
     bool flagService;
 
 
     while (true) {
-        system("cls");
+        clearConsole();
         printWarningIfNoCups(cups);
         printBalance(balance, "money");
         printMenu();
 
-        choice = inputNumber(choice);
+        choice = inputNumber(choice, "number");
 
         if (0 < choice and choice < 4) {
             price = installPrice(choice);
@@ -56,7 +62,9 @@ int main() {
             } else {
                 transaction(price, balance, balanceInMachine);
                 if (cups > 0) {
+                    clearConsole();
                     giveCoffee();
+                    pause();
 
                     cups--;
                 } else {}
@@ -64,28 +72,93 @@ int main() {
         } else if (choice == 4) {
             balance = inputMaterials(balance, "money");
         } else if (choice == 5) {
-            system("cls");
-            printPinMenu();
+            clearConsole();
 
+            while (true){
+            pin = inputNumber(pin, "PIN");
+            counter--;
+
+            if (pin == PIN) {
+                counter = 3;
+                flagService = true;
+                break;
+            }
+            else if (pin == 0) {
+                counter++;
+                flagService = false;
+                break;
+            }
+            else if (counter == 0) {
+                lockMachine();
+            }            
+            }
+
+
+            while (flagService) {
+                clearConsole();
+                printServiceMenu();
+
+                choice = inputNumber(choice, "number");
+
+                if (choice == 1) {  //Money
+                    clearConsole();
+                    printBalance(balance + balanceInMachine, "money");
+
+                    pause();
+                }
+                else if (choice == 2) {   //Cups
+                    clearConsole();
+                    cups = inputMaterials(cups, "cups");  //max 700 pcs
+                }
+                else if (choice == 3) {   //Withdraw money
+                    clearConsole();
+                    transaction(balanceInMachine, balanceInMachine, moneyTakenOut);
+                    transaction(balance, balance, moneyTakenOut);
+
+                    cout << "Operation completed successfully !!! Money withdrawn: " << moneyTakenOut << " BYN" << endl;
+
+                    moneyTakenOut = 0;
+                    pause();
+                }
+                else if (choice == 4) {   //Exit
+                    flagService = false;
+                }
+                else {
+                    cout << "Incorrect input!!!" << endl;
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+            /*printPinMenu();
+            
             choice = inputNumber(choice);
             if (choice == 1) {
                 if (isPinRightEntered()) {
                     flagService = true;
                     while (flagService) {
+                        clearConsole();
                         printServiceMenu();
 
                         choice = inputNumber(choice);
 
                         if (choice == 1) {  //Money
-                            system("cls");
+                            clearConsole();
                             printBalance(balance + balanceInMachine, "money");
 
                             pause();
                         } else if (choice == 2) {   //Cups
-                            system("cls");
+                            clearConsole();
                             cups = inputMaterials(cups, "cups");  //max 700 pcs
                         } else if (choice == 3) {   //Withdraw money
-                            system("cls");
+                            clearConsole();
                             transaction(balanceInMachine, balanceInMachine, moneyTakenOut);
                             transaction(balance, balance, moneyTakenOut);
 
@@ -102,12 +175,12 @@ int main() {
                 } else {
                     while (true) {  //maybe one function like lockMachine();
                         int tmp;
-                        system("cls");
+                        clearConsole();
                         cout << "The machine is locked after 3 attempts to enter the wrong pin...";
                         cin >> tmp;
                     }
                 }
-            } else {}
+            } else {}*/
 
         }
     }
@@ -118,13 +191,19 @@ void printBalance(double material, string nameOfMaterial) {
 }
 
 void printWarningIfNoCups(int cups) {
-    if (cups == 0) {
-        cout << "**********************************************************************" << endl;
+    cout << "**********************************************************************" << endl;
+
+    if (cups < 4) {
+        cout << "***************** Warning! Only " << cups << " cups left in machine ***************" << endl;
+    }
+    else if (cups == 0) {
         cout << "*********************** Warning! NO cups. ****************************" << endl;
         cout << "*** Do not order coffee, otherwise you will be wasting your money. ***" << endl;
-        cout << "**********************************************************************" << endl;
     }
+    cout << "**********************************************************************" << endl;
 }
+
+
 
 void printMenu() {
     cout << "1. Espresso " << ESPRESSO_PRICE << " BYN" << endl;
@@ -135,12 +214,11 @@ void printMenu() {
 }
 
 void pause() {
-    cout << endl;
     system("pause");
 }
 
-int inputNumber(int number) {
-    cout << "Please, press the button(s): ";
+int inputNumber(int number, string word) {
+    cout << "Enter " << word << ": ";
     cin >> number;
 
     return number;
@@ -150,16 +228,23 @@ double inputMaterials(double material, string nameOfMaterial) {
     double input = 0;
 
     while (true) {
-        system("cls");
+        clearConsole();
         printBalance(material, nameOfMaterial);
 
         cout << "Please insert " << nameOfMaterial << "(0 - Exit): ";
         cin >> input;
-        if (input == 0) {
-            break;
-        }
 
-        material += input;
+        if (nameOfMaterial == "cups" and material + input > 700) {
+            clearConsole();
+            cout << "Too many " << nameOfMaterial << ". You can add " << 700 - material << endl;
+            pause();
+        } else if (input > 0) {
+           material += input;
+        }
+        else if (input == 0){
+           break;
+        }
+        else {}
     }
 
     return material;
@@ -185,7 +270,6 @@ void transaction(double sum, double &from, double &to) {
 
 void giveCoffee() {
     cout << "*** Take your coffee! ***" << endl;
-    pause();
 }
 
 void printPinMenu() {
@@ -198,9 +282,9 @@ bool isPinRightEntered() {
     bool flag = false;
 
     while (counter < 3) {
-        system("cls");
+        clearConsole();
 
-        pin = inputNumber(pin);
+        pin = inputNumber(pin, "PIN");
 
         if (pin == PIN) {
             flag = true;
@@ -212,10 +296,31 @@ bool isPinRightEntered() {
 }
 
 void printServiceMenu() {
-    system("cls");
     cout << "Service menu: " << endl;
     cout << "1. Balance of money in machine" << endl;
     cout << "2. Check/Change the number of cups" << endl;
     cout << "3. Withdraw money from the machine" << endl;
     cout << "4. Exit the Service menu" << endl;
+}
+
+void clearConsole()
+{
+    system("cls");
+}
+
+int inputPin(int pin)
+{
+    cout << "Enter PIN: ";
+    cin >> pin;
+        
+    return pin;
+}
+
+void lockMachine(){
+    while (true) {  //maybe one function like lockMachine();
+        int tmp;
+        clearConsole();
+        cout << "The machine is locked after 3 attempts to enter the wrong pin...";
+        cin >> tmp;
+    }
 }
