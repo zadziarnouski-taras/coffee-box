@@ -5,13 +5,22 @@
 #define CAPPUCCINO_PRICE 2.5
 #define LATTE_PRICE 3.0
 #define PIN 1234
-#define PIN_ATTEMPTS 3
+
+/**
+ * Warning codes
+ * */
+#define NO_CUPS 1
+#define NOT_ENOUGH_MONEY 2
+#define NO_MONEY_IN_MACHINE 3
+#define INCORRECT_INPUT 4
+#define MAX_CAPACITY_OF_CUPS_700 5
+#define LOCK_MACHINE 6
 
 using namespace std;
 
 void printBalance(double material, string nameOfMaterial);
 
-void printWarningIfNoCups(int cups);
+void printTipLessThan3Cups(int cups);
 
 void printMenu();
 
@@ -27,36 +36,39 @@ void transaction(double sum, double &from, double &to);
 
 void giveCoffee();
 
-void printPinMenu();
-
-bool isPinRightEntered();
-
 void printServiceMenu();
 
 void clearConsole();
 
-int inputPin(int pin);
-
 void lockMachine();
+
+bool checkPin(int pin);
+
+void printWarning(int warningCode);
 
 int main() {
     int choice = 0, cups = 3, pin = 0, counter = 3;
     double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
-    bool flagService;
-
+    bool isFromServiceMenu = false;
 
     while (true) {
         clearConsole();
-        printWarningIfNoCups(cups);
+
+        if (cups == 0) {
+            printWarning(NO_CUPS);
+        } else if (cups < 4) {
+            printTipLessThan3Cups(cups);
+        }
         printBalance(balance, "money");
         printMenu();
 
         choice = inputNumber(choice, "number");
 
-        if (0 < choice and choice < 4) {
+        if (0 < choice and choice < 4) {    //ESPRESSO or CAPPUCCINO or LATTE
             price = installPrice(choice);
             if (price > balance) {
-                cout << "Not enough money" << endl;
+                clearConsole();
+                printWarning(NOT_ENOUGH_MONEY);
 
                 pause(); //Sleep(3000);
             } else {
@@ -69,119 +81,68 @@ int main() {
                     cups--;
                 } else {}
             }
-        } else if (choice == 4) {
+        } else if (choice == 4) {   //Put Money
             balance = inputMaterials(balance, "money");
-        } else if (choice == 5) {
+        } else if (choice == 5) {   //Service
             clearConsole();
-
-            while (true){
-            pin = inputNumber(pin, "PIN");
-            counter--;
-
-            if (pin == PIN) {
-                counter = 3;
-                flagService = true;
-                break;
-            }
-            else if (pin == 0) {
-                counter++;
-                flagService = false;
-                break;
-            }
-            else if (counter == 0) {
-                lockMachine();
-            }            
-            }
-
-
-            while (flagService) {
+            while (counter > 0) {
                 clearConsole();
-                printServiceMenu();
+                pin = inputNumber(pin, "PIN");
 
-                choice = inputNumber(choice, "number");
+                if (pin) {
+                    counter--;
+                    if (checkPin(pin)) {
+                        isFromServiceMenu = true;
+                        while (true) {
+                            counter = 3, pin = 0;
+                            clearConsole();
+                            printServiceMenu();
 
-                if (choice == 1) {  //Money
-                    clearConsole();
-                    printBalance(balance + balanceInMachine, "money");
+                            choice = inputNumber(choice, "number");
 
-                    pause();
+                            if (choice == 1) {  //Money
+                                clearConsole();
+                                printBalance(balance + balanceInMachine, "money");
+
+                                pause();
+                            } else if (choice == 2) {   //Cups
+                                clearConsole();
+                                cups = inputMaterials(cups, "cups");
+                            } else if (choice == 3) {   //Withdraw money
+                                clearConsole();
+                                if (balanceInMachine > 0) {
+                                    transaction(balanceInMachine, balanceInMachine, moneyTakenOut);
+                                }
+                                if (balance > 0) {
+                                    transaction(balance, balance, moneyTakenOut);
+                                }
+                                if (moneyTakenOut > 0) {
+                                    cout << "Operation completed successfully !!! Money withdrawn: " << moneyTakenOut   //maybe one more function
+                                         << " BYN"
+                                         << endl;
+                                    moneyTakenOut = 0;
+                                } else {
+                                    printWarning(NO_MONEY_IN_MACHINE);
+                                }
+                                pause();
+                            } else if (choice == 4) {   //Exit
+                                break;
+                            } else {
+                                printWarning(INCORRECT_INPUT);
+                            }
+                        }
+                    } else {}
+                } else {
+                    break;
                 }
-                else if (choice == 2) {   //Cups
-                    clearConsole();
-                    cups = inputMaterials(cups, "cups");  //max 700 pcs
-                }
-                else if (choice == 3) {   //Withdraw money
-                    clearConsole();
-                    transaction(balanceInMachine, balanceInMachine, moneyTakenOut);
-                    transaction(balance, balance, moneyTakenOut);
-
-                    cout << "Operation completed successfully !!! Money withdrawn: " << moneyTakenOut << " BYN" << endl;
-
-                    moneyTakenOut = 0;
-                    pause();
-                }
-                else if (choice == 4) {   //Exit
-                    flagService = false;
-                }
-                else {
-                    cout << "Incorrect input!!!" << endl;
+                if (isFromServiceMenu) {
+                    isFromServiceMenu = false;
+                    break;
                 }
             }
-
-
-
-
-
-
-
-
-
-
-            /*printPinMenu();
-            
-            choice = inputNumber(choice);
-            if (choice == 1) {
-                if (isPinRightEntered()) {
-                    flagService = true;
-                    while (flagService) {
-                        clearConsole();
-                        printServiceMenu();
-
-                        choice = inputNumber(choice);
-
-                        if (choice == 1) {  //Money
-                            clearConsole();
-                            printBalance(balance + balanceInMachine, "money");
-
-                            pause();
-                        } else if (choice == 2) {   //Cups
-                            clearConsole();
-                            cups = inputMaterials(cups, "cups");  //max 700 pcs
-                        } else if (choice == 3) {   //Withdraw money
-                            clearConsole();
-                            transaction(balanceInMachine, balanceInMachine, moneyTakenOut);
-                            transaction(balance, balance, moneyTakenOut);
-
-                            cout << "Operation completed successfully !!! Money withdrawn: " << moneyTakenOut << " BYN" << endl;
-
-                            moneyTakenOut = 0;
-                            pause();
-                        } else if (choice == 4) {   //Exit
-                            flagService = false;
-                        } else {
-                            cout << "Incorrect input!!!" << endl;
-                        }
-                    }
-                } else {
-                    while (true) {  //maybe one function like lockMachine();
-                        int tmp;
-                        clearConsole();
-                        cout << "The machine is locked after 3 attempts to enter the wrong pin...";
-                        cin >> tmp;
-                    }
-                }
-            } else {}*/
-
+            if (counter == 0) {
+                lockMachine();
+            }
         }
     }
 }
@@ -190,20 +151,11 @@ void printBalance(double material, string nameOfMaterial) {
     cout << "Balance of " << nameOfMaterial << ": " << material << endl;
 }
 
-void printWarningIfNoCups(int cups) {
+void printTipLessThan3Cups(int cups) {
     cout << "**********************************************************************" << endl;
-
-    if (cups < 4) {
-        cout << "***************** Warning! Only " << cups << " cups left in machine ***************" << endl;
-    }
-    else if (cups == 0) {
-        cout << "*********************** Warning! NO cups. ****************************" << endl;
-        cout << "*** Do not order coffee, otherwise you will be wasting your money. ***" << endl;
-    }
+    cout << "***************** Warning! Only " << cups << " cups left in machine ***************" << endl;
     cout << "**********************************************************************" << endl;
 }
-
-
 
 void printMenu() {
     cout << "1. Espresso " << ESPRESSO_PRICE << " BYN" << endl;
@@ -218,7 +170,11 @@ void pause() {
 }
 
 int inputNumber(int number, string word) {
-    cout << "Enter " << word << ": ";
+    string hint = "";
+    if (word == "PIN") {
+        hint = " (0 - Exit)";
+    }
+    cout << "Enter " << word << hint << ": ";
     cin >> number;
 
     return number;
@@ -236,15 +192,14 @@ double inputMaterials(double material, string nameOfMaterial) {
 
         if (nameOfMaterial == "cups" and material + input > 700) {
             clearConsole();
-            cout << "Too many " << nameOfMaterial << ". You can add " << 700 - material << endl;
+
+            printWarning(MAX_CAPACITY_OF_CUPS_700);
             pause();
         } else if (input > 0) {
-           material += input;
-        }
-        else if (input == 0){
-           break;
-        }
-        else {}
+            material += input;
+        } else if (input == 0) {
+            break;
+        } else {}
     }
 
     return material;
@@ -272,29 +227,6 @@ void giveCoffee() {
     cout << "*** Take your coffee! ***" << endl;
 }
 
-void printPinMenu() {
-    cout << "1. Enter PIN." << endl;
-    cout << "0. Exit." << endl;
-}
-
-bool isPinRightEntered() {
-    int pin = 0, counter = 0;
-    bool flag = false;
-
-    while (counter < 3) {
-        clearConsole();
-
-        pin = inputNumber(pin, "PIN");
-
-        if (pin == PIN) {
-            flag = true;
-            break;
-        }
-        counter++;
-    }
-    return flag;
-}
-
 void printServiceMenu() {
     cout << "Service menu: " << endl;
     cout << "1. Balance of money in machine" << endl;
@@ -303,24 +235,57 @@ void printServiceMenu() {
     cout << "4. Exit the Service menu" << endl;
 }
 
-void clearConsole()
-{
+void clearConsole() {
     system("cls");
 }
 
-int inputPin(int pin)
-{
-    cout << "Enter PIN: ";
-    cin >> pin;
-        
-    return pin;
-}
-
-void lockMachine(){
-    while (true) {  //maybe one function like lockMachine();
+void lockMachine() {
+    while (true) {
         int tmp;
         clearConsole();
-        cout << "The machine is locked after 3 attempts to enter the wrong pin...";
+
+        printWarning(LOCK_MACHINE);
         cin >> tmp;
+    }
+}
+
+bool checkPin(int pin) {
+    return pin == PIN;
+}
+
+void printWarning(int warningCode) {
+    switch (warningCode) {
+        case NO_CUPS:
+            cout << "*****************************************************************************" << endl;
+            cout << "*** NO cups.Do NOT order coffee, otherwise you will be wasting your money.***" << endl;
+            cout << "*****************************************************************************" << endl;
+            break;
+        case NOT_ENOUGH_MONEY:
+            cout << "*****************************************************************************" << endl;
+            cout << "************************** NOT enough money! ********************************" << endl;
+            cout << "*****************************************************************************" << endl;
+            break;
+        case NO_MONEY_IN_MACHINE:
+            cout << "*****************************************************************************" << endl;
+            cout << "******************** There is NO money in the machine! **********************" << endl;
+            cout << "*****************************************************************************" << endl;
+            break;
+        case INCORRECT_INPUT:
+            cout << "*****************************************************************************" << endl;
+            cout << "*************************** Incorrect input! ********************************" << endl;
+            cout << "*****************************************************************************" << endl;
+            break;
+        case MAX_CAPACITY_OF_CUPS_700:
+            cout << "*****************************************************************************" << endl;
+            cout << "******************* MAXIMUM capacity of cups 700 pieces! ********************" << endl;
+            cout << "*****************************************************************************" << endl;
+            break;
+        case LOCK_MACHINE:
+            cout << "*****************************************************************************" << endl;
+            cout << "***** The machine is locked after 3 attempts to enter the wrong pin... ******" << endl;
+            cout << "*****************************************************************************" << endl;
+            break;
+        default:
+            break;
     }
 }
