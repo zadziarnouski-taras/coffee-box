@@ -5,7 +5,7 @@
 #define ESPRESSO_PRICE 1.5
 #define CAPPUCCINO_PRICE 2.5
 #define LATTE_PRICE 3.0
-#define PIN 1234
+#define PIN 8014
 
 /**
  * Warning codes
@@ -27,7 +27,7 @@ void printMenu();
 
 void pause();
 
-int inputNumber(int number, string word);
+int inputNumber(int number);
 
 double inputMaterials(double material, string nameOfMaterial);
 
@@ -67,7 +67,7 @@ int main() {
         printBalance(balance, "money");
         printMenu();
 
-        choice = inputNumber(choice, "number");
+        choice = inputNumber(choice);
 
         if (0 < choice and choice < 4) {    //ESPRESSO or CAPPUCCINO or LATTE
             price = installPrice(choice);
@@ -103,7 +103,7 @@ int main() {
                             clearConsole();
                             printServiceMenu();
 
-                            choice = inputNumber(choice, "number");
+                            choice = inputNumber(choice);
 
                             if (choice == 1) {  //Money
                                 clearConsole();
@@ -173,12 +173,8 @@ void pause() {
     system("pause");
 }
 
-int inputNumber(int number, string word) {
-    string hint = "";
-    if (word == "PIN") {
-        hint = " (0 - Exit)";
-    }
-    cout << "Enter " << word << hint << ": ";
+int inputNumber(int number) {
+    cout << "Press the button: ";
     cin >> number;
 
     return number;
