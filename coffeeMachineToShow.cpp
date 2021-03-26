@@ -1,5 +1,6 @@
 #include <iostream>
 //#include <Windows.h>
+#include <conio.h>
 
 #define ESPRESSO_PRICE 1.5
 #define CAPPUCCINO_PRICE 2.5
@@ -48,6 +49,8 @@ void printWarning(int warningCode);
 
 void composeWarning(string warning);
 
+int inputPin();
+
 int main() {
     int choice = 0, cups = 3, pin = 0, counter = 3;
     double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
@@ -89,7 +92,7 @@ int main() {
             clearConsole();
             while (counter > 0) {
                 clearConsole();
-                pin = inputNumber(pin, "PIN");
+                pin = inputPin();
 
                 if (pin) {
                     counter--;
@@ -128,10 +131,8 @@ int main() {
                                     printWarning(NO_MONEY_IN_MACHINE);
                                 }
                                 pause();
-                            } else if (choice == 4) {   //Exit
+                            }  else {
                                 break;
-                            } else {
-                                printWarning(INCORRECT_INPUT);
                             }
                         }
                     } else {}
@@ -301,4 +302,21 @@ void composeWarning(string warning) {
     cout << topBottomLine << endl;
     cout << midLine << endl;
     cout << topBottomLine << endl;
+}
+
+int inputPin() {
+    int pin = 0, temp = 0;
+    
+    cout << "Enter PIN: ";
+
+    while (temp != 13){
+        temp = _getch();
+
+        if (temp != 13){
+            cout << "*";
+            pin = pin * 10 + (int)temp - 48;
+        }
+    }
+
+    return pin;
 }
