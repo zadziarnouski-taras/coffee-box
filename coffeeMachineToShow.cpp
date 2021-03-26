@@ -301,16 +301,28 @@ void composeWarning(string warning) {
 }
 
 int inputPin() {
-    int pin = 0, temp = 0;
+    int pin = 0, temp = 0, counter = 0;
     
     cout << "Enter PIN: ";
 
     while (temp != 13){
         temp = _getch();
 
-        if (temp != 13){
+        if (temp == 8) {
+            if (counter > 0) {
+                clearConsole();
+                counter--;
+                pin /= 10;
+
+                cout << "Enter PIN: ";
+                for (int i = 0; i < counter; i++) {
+                    cout << "*";
+                }
+            }            
+        } else if (temp != 13){
             cout << "*";
             pin = pin * 10 + (int)temp - 48;
+            counter++;
         }
     }
 
