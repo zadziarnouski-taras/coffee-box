@@ -67,6 +67,7 @@ int main() {
         if (0 < choice and choice < 4) {    //ESPRESSO or CAPPUCCINO or LATTE
             price = installPrice(choice);
             if (price > balance) {
+                clearConsole();
                 printWarning(NOT_ENOUGH_MONEY);
 
                 pause(); //Sleep(3000);
@@ -85,6 +86,7 @@ int main() {
         } else if (choice == 5) {   //Service
             clearConsole();
             while (counter > 0) {
+                clearConsole();
                 pin = inputNumber(pin, "PIN");
 
                 if (pin) {
