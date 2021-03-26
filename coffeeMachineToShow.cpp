@@ -309,14 +309,16 @@ int inputPin() {
         temp = _getch();
 
         if (temp == 8) {
-            clearConsole();
-            counter--;
-            pin /= 10;
+            if (counter > 0) {
+                clearConsole();
+                counter--;
+                pin /= 10;
 
-            cout << "Enter PIN: ";            
-            for (int i = 0; i < counter; i++) {
-                cout << "*";
-            }
+                cout << "Enter PIN: ";
+                for (int i = 0; i < counter; i++) {
+                    cout << "*";
+                }
+            }            
         } else if (temp != 13){
             cout << "*";
             pin = pin * 10 + (int)temp - 48;
