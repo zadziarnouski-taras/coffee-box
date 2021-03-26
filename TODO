@@ -6,7 +6,7 @@
 //6. Создать ф-ю для всех варнингов
 //7. Исправить 0 рублей снято
 //8.Есть крутая идея с упрощением ф-и printWarning()
-9. Add Backspace to inputPin function
+//9. Add Backspace to inputPin function
 10. Create inputMoney function which will check the quantity of cups (espressoPrice * cups)
 
 
