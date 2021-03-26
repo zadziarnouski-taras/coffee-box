@@ -46,6 +46,8 @@ bool checkPin(int pin);
 
 void printWarning(int warningCode);
 
+void composeWarning(string warning);
+
 int main() {
     int choice = 0, cups = 3, pin = 0, counter = 3;
     double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
@@ -117,7 +119,8 @@ int main() {
                                     transaction(balance, balance, moneyTakenOut);
                                 }
                                 if (moneyTakenOut > 0) {
-                                    cout << "Operation completed successfully !!! Money withdrawn: " << moneyTakenOut   //maybe one more function
+                                    cout << "Operation completed successfully !!! Money withdrawn: "
+                                         << moneyTakenOut   //maybe one more function
                                          << " BYN"
                                          << endl;
                                     moneyTakenOut = 0;
@@ -254,38 +257,48 @@ bool checkPin(int pin) {
 }
 
 void printWarning(int warningCode) {
+    string warning;
+
     switch (warningCode) {
         case NO_CUPS:
-            cout << "*****************************************************************************" << endl;
-            cout << "*** NO cups.Do NOT order coffee, otherwise you will be wasting your money.***" << endl;
-            cout << "*****************************************************************************" << endl;
+            warning = "NO cups!Do NOT order coffee, otherwise you will be wasting your money";
+            composeWarning(warning);
             break;
         case NOT_ENOUGH_MONEY:
-            cout << "*****************************************************************************" << endl;
-            cout << "************************** NOT enough money! ********************************" << endl;
-            cout << "*****************************************************************************" << endl;
+            warning = "NOT enough money!";
+            composeWarning(warning);
             break;
         case NO_MONEY_IN_MACHINE:
-            cout << "*****************************************************************************" << endl;
-            cout << "******************** There is NO money in the machine! **********************" << endl;
-            cout << "*****************************************************************************" << endl;
+            warning = "There is NO money in the machine!";
+            composeWarning(warning);
             break;
         case INCORRECT_INPUT:
-            cout << "*****************************************************************************" << endl;
-            cout << "*************************** Incorrect input! ********************************" << endl;
-            cout << "*****************************************************************************" << endl;
+            warning = "Incorrect input!";
+            composeWarning(warning);
             break;
         case MAX_CAPACITY_OF_CUPS_700:
-            cout << "*****************************************************************************" << endl;
-            cout << "******************* MAXIMUM capacity of cups 700 pieces! ********************" << endl;
-            cout << "*****************************************************************************" << endl;
+            warning = "MAXIMUM capacity of cups 700 pieces!";
+            composeWarning(warning);
             break;
         case LOCK_MACHINE:
-            cout << "*****************************************************************************" << endl;
-            cout << "***** The machine is locked after 3 attempts to enter the wrong pin... ******" << endl;
-            cout << "*****************************************************************************" << endl;
+            warning = "***** The machine is locked after 3 attempts to enter the wrong pin... ******";
+            composeWarning(warning);
             break;
         default:
             break;
     }
+}
+
+void composeWarning(string warning) {
+    string midLine = "***   ***", topBottomLine;
+
+    midLine.replace(4, 1, warning);
+
+    for (int i = 0; i < midLine.size(); i++) {
+        topBottomLine.append("*");
+    }
+
+    cout << topBottomLine << endl;
+    cout << midLine << endl;
+    cout << topBottomLine << endl;
 }
