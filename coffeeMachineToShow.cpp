@@ -1,5 +1,5 @@
 #include <iostream>
-//#include <Windows.h>
+#include <Windows.h>
 #include <conio.h>
 
 #define ESPRESSO_PRICE 1.5
@@ -16,11 +16,12 @@
 #define INCORRECT_INPUT 4
 #define MAX_CAPACITY_OF_CUPS_700 5
 #define LOCK_MACHINE 6
-#define NOT_ENOUGH_CUPS 7
 
 using namespace std;
 
 void printBalance(double material, string nameOfMaterial);
+
+void printTipLessThan3Cups(int cups);
 
 void printMenu();
 
@@ -50,10 +51,15 @@ void composeWarning(string warning);
 
 int inputPin();
 
+<<<<<<< Updated upstream
+=======
 double inputMoney(double balance, int cups);
 
 bool isEnoughCups(double totalBalance, int cups);
 
+void printLoading();
+
+>>>>>>> Stashed changes
 int main() {
     int choice = 0, cups = 3, pin = 0, counter = 3;
     double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
@@ -61,11 +67,12 @@ int main() {
 
     while (true) {
         clearConsole();
-        system("color 0F");
 
         if (cups == 0) {
             printWarning(NO_CUPS);
-        } 
+        } else if (cups < 4) {
+            printTipLessThan3Cups(cups);
+        }
         printBalance(balance, "money");
         printMenu();
 
@@ -77,11 +84,12 @@ int main() {
                 clearConsole();
                 printWarning(NOT_ENOUGH_MONEY);
 
-                pause();
+                pause(); //Sleep(3000);
             } else {
                 transaction(price, balance, balanceInMachine);
                 if (cups > 0) {
                     clearConsole();
+                    printLoading();
                     giveCoffee();
                     pause();
 
@@ -89,13 +97,11 @@ int main() {
                 } else {}
             }
         } else if (choice == 4) {   //Put Money
-            //balance = inputMaterials(balance, "money");
-            balance = inputMoney(balance, cups);
+            balance = inputMaterials(balance, "money");
         } else if (choice == 5) {   //Service
             clearConsole();
             while (counter > 0) {
                 clearConsole();
-                system("color 04");
                 pin = inputPin();
 
                 if (pin) {
@@ -105,7 +111,6 @@ int main() {
                         while (true) {
                             counter = 3, pin = 0;
                             clearConsole();
-                            system("color F1");
                             printServiceMenu();
 
                             choice = inputNumber(choice);
@@ -150,7 +155,6 @@ int main() {
                 }
             }
             if (counter == 0) {
-                system("color 40");
                 lockMachine();
             }
         }
@@ -161,17 +165,22 @@ void printBalance(double material, string nameOfMaterial) {
     cout << "Balance of " << nameOfMaterial << ": " << material << endl;
 }
 
+void printTipLessThan3Cups(int cups) {
+    cout << "**********************************************************************" << endl;
+    cout << "***************** Warning! Only " << cups << " cups left in machine ***************" << endl;
+    cout << "**********************************************************************" << endl;
+}
+
 void printMenu() {
-    cout << "1. Espresso \t  " << ESPRESSO_PRICE << " BYN" << endl;
-    cout << "2. Cappuccino \t  " << CAPPUCCINO_PRICE << " BYN" << endl;
-    cout << "3. Latte \t  " << LATTE_PRICE << "   BYN" << endl;
+    cout << "1. Espresso " << ESPRESSO_PRICE << " BYN" << endl;
+    cout << "2. Cappuccino " << CAPPUCCINO_PRICE << " BYN" << endl;
+    cout << "3. Latte " << LATTE_PRICE << " BYN" << endl;
     cout << "4. Put money" << endl;
     cout << "5. Service" << endl << endl;
 }
 
 void pause() {
-    cout << "Press any key to continue...";
-    _getch();
+    system("pause");
 }
 
 int inputNumber(int number) {
@@ -225,7 +234,40 @@ void transaction(double sum, double &from, double &to) {
 }
 
 void giveCoffee() {
-    cout << "*** Take your coffee! ***" << endl;
+        cout << "____________*** Take your coffee! ***___________" << endl;
+        cout << "_______________Have a nice day!!!_______________" << endl;
+        cout << "______________1¶¶¶¶¶¶¶¶¶1_______________________" << endl;
+        cout << "_________1¶¶¶¶¶¶¶11_______1¶¶¶¶¶¶¶¶1____________" << endl;
+        cout << "________¶¶¶¶1____________¶¶¶¶¶¶¶¶¶¶¶¶___________" << endl;
+        cout << "_______1¶¶¶¶____________________¶¶¶¶1__11¶11____" << endl;
+        cout << "________¶¶¶¶¶11_______________1¶¶¶1__¶¶¶¶¶¶¶¶1__" << endl;
+        cout << "_________¶¶¶¶¶¶¶¶¶¶¶11111¶¶¶¶¶¶¶___¶¶¶1___¶¶¶¶__" << endl;
+        cout << "__________1¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶1____¶¶¶¶_____1¶¶¶__" << endl;
+        cout << "___________1¶¶¶1________________¶¶¶¶_____1¶¶¶¶__" << endl;
+        cout << "____________1¶¶¶¶______________¶¶¶¶__1¶¶¶¶¶¶¶___" << endl;
+        cout << "_____________1¶¶¶¶____________1¶¶¶___¶¶¶¶¶¶¶____" << endl;
+        cout << "______________1¶¶¶____________¶¶¶_____1111______" << endl;
+        cout << "__________1¶¶¶¶¶¶¶¶__________¶¶¶________________" << endl;
+        cout << "______1¶¶¶¶¶¶¶¶11¶¶¶________¶¶¶__¶¶¶¶¶¶¶1_______" << endl;
+        cout << "___1¶¶¶¶¶¶1_______¶¶¶¶1__11¶¶¶___¶¶¶¶¶¶¶¶¶______" << endl;
+        cout << "__1¶¶¶¶¶¶__________1¶¶¶¶¶¶¶¶1_________1¶¶¶¶_____" << endl;
+        cout << "__1¶¶¶¶¶¶¶____________________________¶¶¶¶______" << endl;
+        cout << "____1¶¶¶¶¶¶¶¶1_____________________1¶¶¶¶1_______" << endl;
+        cout << "_______1¶¶¶¶¶¶¶¶¶¶¶¶¶111111111¶¶¶¶¶¶¶¶__________" << endl;
+        cout << "____________11¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶11_____________" << endl;
+        cout << "________________________________________________" << endl;
+}
+
+void printLoading()
+{
+    for (int i = 0; i < 11; i++) {
+        clearConsole();
+        for (int j = 0; j < i; j++) {
+            cout << "///";
+        }
+        cout << i * 10 << "%" << endl;
+        Sleep(300);
+    }
 }
 
 void printServiceMenu() {
@@ -279,11 +321,7 @@ void printWarning(int warningCode) {
             composeWarning(warning);
             break;
         case LOCK_MACHINE:
-            warning = "The machine is locked after 3 attempts to enter the wrong pin...";
-            composeWarning(warning);
-            break;
-        case NOT_ENOUGH_CUPS:
-            warning = "Warning! Could be not enough cups in machine!";
+            warning = "***** The machine is locked after 3 attempts to enter the wrong pin... ******";
             composeWarning(warning);
             break;
         default:
@@ -308,7 +346,7 @@ void composeWarning(string warning) {
 int inputPin() {
     int pin = 0, temp = 0, counter = 0;
     
-    cout << "Enter PIN (0 for exit): ";
+    cout << "Enter PIN: ";
 
     while (temp != 13){
         temp = _getch();
@@ -332,50 +370,4 @@ int inputPin() {
     }
 
     return pin;
-}
-
-double inputMoney(double balance, int cups) {
-    double moneyToInput = 0;
-    int choice = 0;
-
-    while (true) {
-        clearConsole();
-        printBalance(balance, "money");
-        cout << "Input money (0 to exit): ";
-        cin >> moneyToInput;
-
-        if (moneyToInput < 0) {
-             moneyToInput = 0; }
-
-        if (moneyToInput == 0) {
-            break;
-        }
-        else if (isEnoughCups(balance + moneyToInput, cups)) {
-            balance += moneyToInput;
-        }
-        else {
-            do {
-                clearConsole();
-                printWarning(NOT_ENOUGH_CUPS);
-                cout << "Press 1 to confirm input, 0 to take your money. " << endl;
-                choice = inputNumber(choice);
-            } while (choice != 0 and choice != 1);
-
-            if (choice) {
-                balance += moneyToInput;
-            }
-            else {
-                clearConsole();
-                cout << "Take your " << moneyToInput << " BYN" << endl;
-                pause();
-                break;
-            }
-        }
-    }
-   
-    return balance;
-}
-
-bool isEnoughCups(double totalBalance, int cups){
-    return ESPRESSO_PRICE * cups >= totalBalance;
 }
