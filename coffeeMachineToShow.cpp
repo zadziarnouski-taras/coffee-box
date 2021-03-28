@@ -51,9 +51,13 @@ void composeWarning(string warning);
 
 int inputPin();
 
+double inputMoney(double moneyToInput);
+
+bool isEnoughCups(double totalBalance, int cups);
+
 int main() {
     int choice = 0, cups = 3, pin = 0, counter = 3;
-    double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
+    double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0, moneyToInput = 0;
     bool isFromServiceMenu = false;
 
     while (true) {
@@ -87,7 +91,35 @@ int main() {
                 } else {}
             }
         } else if (choice == 4) {   //Put Money
-            balance = inputMaterials(balance, "money");
+            //balance = inputMaterials(balance, "money");
+            while (true) {
+                clearConsole();
+                printBalance(balance, "money");
+                moneyToInput = inputMoney(moneyToInput);
+                
+                if (moneyToInput == 0) { 
+                    break; }
+                else if (isEnoughCups(balance + moneyToInput, cups)) {
+                    balance += moneyToInput;
+                }
+                else {
+                    do {
+                        clearConsole();
+                        cout << "Warning! Could be not enough cups in machine!" << endl;
+                        cout << "Press 1 to confirm input, 0 to take your money: ";
+                        choice = inputNumber(choice);
+                    } while (choice != 0 and choice != 1);
+
+                    if (choice) {
+                        balance += moneyToInput;
+                    }
+                    else { 
+                        clearConsole();
+                        cout << "Take your " << moneyToInput << " BYN" << endl;
+                        pause();
+                        break; }
+                }
+           }
         } else if (choice == 5) {   //Service
             clearConsole();
             while (counter > 0) {
@@ -327,4 +359,19 @@ int inputPin() {
     }
 
     return pin;
+}
+
+double inputMoney(double moneyToInput) {
+    cout << "Input money (0 to exit): ";
+    cin >> moneyToInput;
+
+    if (moneyToInput > 0) { 
+        return moneyToInput; 
+    } else { return 0; }
+   
+}
+
+bool isEnoughCups(double totalBalance, int cups)
+{
+    return ESPRESSO_PRICE * cups > totalBalance;
 }
