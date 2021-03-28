@@ -1,5 +1,5 @@
 #include <iostream>
-//#include <Windows.h>
+#include <Windows.h>
 #include <conio.h>
 
 #define ESPRESSO_PRICE 1.5
@@ -54,6 +54,8 @@ double inputMoney(double balance, int cups);
 
 bool isEnoughCups(double totalBalance, int cups);
 
+void printLoading();
+
 int main() {
     int choice = 0, cups = 3, pin = 0, counter = 3;
     double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
@@ -82,6 +84,7 @@ int main() {
                 transaction(price, balance, balanceInMachine);
                 if (cups > 0) {
                     clearConsole();
+                    printLoading();
                     giveCoffee();
                     pause();
 
@@ -225,7 +228,28 @@ void transaction(double sum, double &from, double &to) {
 }
 
 void giveCoffee() {
-    cout << "*** Take your coffee! ***" << endl;
+    cout << "____________*** Take your coffee! ***___________" << endl;
+    cout << "_______________Have a nice day!!!_______________" << endl;
+    cout << "______________1¶¶¶¶¶¶¶¶¶1_______________________" << endl;
+    cout << "_________1¶¶¶¶¶¶¶11_______1¶¶¶¶¶¶¶¶1____________" << endl;
+    cout << "________¶¶¶¶1____________¶¶¶¶¶¶¶¶¶¶¶¶___________" << endl;
+    cout << "_______1¶¶¶¶____________________¶¶¶¶1__11¶11____" << endl;
+    cout << "________¶¶¶¶¶11_______________1¶¶¶1__¶¶¶¶¶¶¶¶1__" << endl;
+    cout << "_________¶¶¶¶¶¶¶¶¶¶¶11111¶¶¶¶¶¶¶___¶¶¶1___¶¶¶¶__" << endl;
+    cout << "__________1¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶1____¶¶¶¶_____1¶¶¶__" << endl;
+    cout << "___________1¶¶¶1________________¶¶¶¶_____1¶¶¶¶__" << endl;
+    cout << "____________1¶¶¶¶______________¶¶¶¶__1¶¶¶¶¶¶¶___" << endl;
+    cout << "_____________1¶¶¶¶____________1¶¶¶___¶¶¶¶¶¶¶____" << endl;
+    cout << "______________1¶¶¶____________¶¶¶_____1111______" << endl;
+    cout << "__________1¶¶¶¶¶¶¶¶__________¶¶¶________________" << endl;
+    cout << "______1¶¶¶¶¶¶¶¶11¶¶¶________¶¶¶__¶¶¶¶¶¶¶1_______" << endl;
+    cout << "___1¶¶¶¶¶¶1_______¶¶¶¶1__11¶¶¶___¶¶¶¶¶¶¶¶¶______" << endl;
+    cout << "__1¶¶¶¶¶¶__________1¶¶¶¶¶¶¶¶1_________1¶¶¶¶_____" << endl;
+    cout << "__1¶¶¶¶¶¶¶____________________________¶¶¶¶______" << endl;
+    cout << "____1¶¶¶¶¶¶¶¶1_____________________1¶¶¶¶1_______" << endl;
+    cout << "_______1¶¶¶¶¶¶¶¶¶¶¶¶¶111111111¶¶¶¶¶¶¶¶__________" << endl;
+    cout << "____________11¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶11_____________" << endl;
+    cout << "________________________________________________" << endl;
 }
 
 void printServiceMenu() {
@@ -378,4 +402,16 @@ double inputMoney(double balance, int cups) {
 
 bool isEnoughCups(double totalBalance, int cups){
     return ESPRESSO_PRICE * cups >= totalBalance;
+}
+
+void printLoading()
+{
+    for (int i = 0; i < 11; i++) {
+        clearConsole();
+        for (int j = 0; j < i; j++) {
+            cout << "///";
+        }
+        cout << i * 10 << "%" << endl;
+        Sleep(300);
+    }
 }
