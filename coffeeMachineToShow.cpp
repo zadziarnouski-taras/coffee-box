@@ -61,6 +61,7 @@ int main() {
 
     while (true) {
         clearConsole();
+        system("color 0F");
 
         if (cups == 0) {
             printWarning(NO_CUPS);
@@ -94,6 +95,7 @@ int main() {
             clearConsole();
             while (counter > 0) {
                 clearConsole();
+                system("color 04");
                 pin = inputPin();
 
                 if (pin) {
@@ -103,6 +105,7 @@ int main() {
                         while (true) {
                             counter = 3, pin = 0;
                             clearConsole();
+                            system("color F1");
                             printServiceMenu();
 
                             choice = inputNumber(choice);
@@ -147,6 +150,7 @@ int main() {
                 }
             }
             if (counter == 0) {
+                system("color 40");
                 lockMachine();
             }
         }
@@ -304,7 +308,7 @@ void composeWarning(string warning) {
 int inputPin() {
     int pin = 0, temp = 0, counter = 0;
     
-    cout << "Enter PIN: ";
+    cout << "Enter PIN (0 for exit): ";
 
     while (temp != 13){
         temp = _getch();
