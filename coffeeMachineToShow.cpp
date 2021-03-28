@@ -22,8 +22,6 @@ using namespace std;
 
 void printBalance(double material, string nameOfMaterial);
 
-void printTipLessThan3Cups(int cups);
-
 void printMenu();
 
 void pause();
@@ -157,12 +155,6 @@ int main() {
 
 void printBalance(double material, string nameOfMaterial) {
     cout << "Balance of " << nameOfMaterial << ": " << material << endl;
-}
-
-void printTipLessThan3Cups(int cups) {
-    cout << "**********************************************************************" << endl;
-    cout << "***************** Warning! Only " << cups << " cups left in machine ***************" << endl;
-    cout << "**********************************************************************" << endl;
 }
 
 void printMenu() {
