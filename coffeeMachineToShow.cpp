@@ -1,6 +1,6 @@
 #include <iostream>
-#include <Windows.h>
-#include <conio.h>
+//#include <Windows.h>
+//#include <conio.h>
 
 #define ESPRESSO_PRICE 1.5
 #define CAPPUCCINO_PRICE 2.5
@@ -10,6 +10,7 @@
 /**
  * Warning codes
  * */
+
 #define NO_CUPS 1
 #define NOT_ENOUGH_MONEY 2
 #define NO_MONEY_IN_MACHINE 3
@@ -21,6 +22,7 @@
 /**
  * Color codes
  * */
+
 #define BLACK 0
 #define BLUE 1
 #define RED 4
@@ -58,8 +60,6 @@ void composeWarning(string warning);
 
 int inputPin();
 
-double inputMoney(double balance, int cups);
-
 bool isEnoughCups(double totalBalance, int cups);
 
 void printLoading();
@@ -76,7 +76,6 @@ int main() {
     while (true) {
         clearConsole();
         changeBackgroundAndFontColor(BLACK, BRIGHT_WHITE);
-//        system("color 0F");
 
         if (cups == 0) {
             printWarning(NO_CUPS);
@@ -105,14 +104,38 @@ int main() {
                 } else {}
             }
         } else if (choice == 4) {   //Put Money
-            //balance = inputMaterials(balance, "money");
-            balance = inputMoney(balance, cups);
+            double moneyToInput = 0;
+            int choice = 0;
+
+            while (true) {
+                moneyToInput = inputMaterials(moneyToInput, "money");
+
+                if (moneyToInput == 0) {
+                    break;
+                } else if (isEnoughCups(balance + moneyToInput, cups)) {
+                    balance += moneyToInput;
+                } else {
+                    do {
+                        clearConsole();
+                        printWarning(NOT_ENOUGH_CUPS);
+                        cout << "Press 1 to confirm input, 0 to take your money. " << endl;
+                        choice = inputNumber(choice);
+                    } while (choice != 0 and choice != 1);
+                    if (choice) {
+                        balance += moneyToInput;
+                    } else {
+                        clearConsole();
+                        cout << "Take your " << moneyToInput << " BYN" << endl;
+                        pause();
+                        break;
+                    }
+                }
+            }
         } else if (choice == 5) {   //Service
             clearConsole();
             while (counter > 0) {
                 clearConsole();
                 changeBackgroundAndFontColor(BLACK, RED);
-//                system("color 04");
                 pin = inputPin();
 
                 if (pin) {
@@ -123,7 +146,6 @@ int main() {
                             counter = 3, pin = 0;
                             clearConsole();
                             changeBackgroundAndFontColor(BRIGHT_WHITE, BLUE);
-//                            system("color F1");
                             printServiceMenu();
 
                             choice = inputNumber(choice);
@@ -165,7 +187,6 @@ int main() {
                 }
             }
             if (counter == 0) {
-//                system("color 40");
                 changeBackgroundAndFontColor(RED, BLACK);
                 lockMachine();
             }
@@ -187,7 +208,7 @@ void printMenu() {
 
 void pause() {
     cout << "Press any key to continue...";
-    _getch();
+//    _getch();
 }
 
 int inputNumber(int number) {
@@ -207,18 +228,22 @@ double inputMaterials(double material, string nameOfMaterial) {
         cout << "Please insert " << nameOfMaterial << "(0 - Exit): ";
         cin >> input;
 
-        if (nameOfMaterial == "cups" and material + input > 700) {
-            clearConsole();
+        if (input < 0) input = 0;
 
+        if (input == 0) {
+            material = 0;
+            break;
+        } else if (nameOfMaterial == "cups" and material + input > 700) {
+            clearConsole();
             printWarning(MAX_CAPACITY_OF_CUPS_700);
             pause();
-        } else if (input > 0) {
+        } else if (nameOfMaterial == "money" and input > 0) {
             material += input;
-        } else if (input == 0) {
             break;
-        } else {}
+        } else if (nameOfMaterial == "cups" and input > 0) {
+            material += input;
+        }
     }
-
     return material;
 }
 
@@ -370,45 +395,6 @@ int inputPin() {
     return pin;
 }
 
-double inputMoney(double balance, int cups) {
-    double moneyToInput = 0;
-    int choice = 0;
-
-    while (true) {
-        clearConsole();
-        printBalance(balance, "money");
-        cout << "Input money (0 to exit): ";
-        cin >> moneyToInput;
-
-        if (moneyToInput < 0) {
-            moneyToInput = 0;
-        }
-
-        if (moneyToInput == 0) {
-            break;
-        } else if (isEnoughCups(balance + moneyToInput, cups)) {
-            balance += moneyToInput;
-        } else {
-            do {
-                clearConsole();
-                printWarning(NOT_ENOUGH_CUPS);
-                cout << "Press 1 to confirm input, 0 to take your money. " << endl;
-                choice = inputNumber(choice);
-            } while (choice != 0 and choice != 1);
-
-            if (choice) {
-                balance += moneyToInput;
-            } else {
-                clearConsole();
-                cout << "Take your " << moneyToInput << " BYN" << endl;
-                pause();
-                break;
-            }
-        }
-    }
-
-    return balance;
-}
 
 bool isEnoughCups(double totalBalance, int cups) {
     return ESPRESSO_PRICE * cups >= totalBalance;
