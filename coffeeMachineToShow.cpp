@@ -1,6 +1,7 @@
 #include <iostream>
-//#include <Windows.h>
-//#include <conio.h>
+#include <Windows.h>
+#include <conio.h>
+#include <string.h>
 
 #define ESPRESSO_PRICE 1.5
 #define CAPPUCCINO_PRICE 2.5
@@ -23,10 +24,10 @@
  * Color codes
  * */
 
-#define BLACK 0
-#define BLUE 1
-#define RED 4
-#define BRIGHT_WHITE 'F'
+const char* BRIGHT_WHITE = "F";
+const char* BLACK = "0";
+const char* BLUE = "1";
+const char* RED = "4";
 
 using namespace std;
 
@@ -64,7 +65,7 @@ bool isEnoughCups(double totalBalance, int cups);
 
 void printLoading();
 
-void changeBackgroundAndFontColor(char backgroundColor, char fontColor);
+void changeBackgroundAndFontColor(const char* backgroundColor, const char* fontColor);
 
 void printConfirmationOfWithdrawnMoney(double withdrawnMoney);
 
@@ -208,7 +209,7 @@ void printMenu() {
 
 void pause() {
     cout << "Press any key to continue...";
-//    _getch();
+    _getch();
 }
 
 int inputNumber(int number) {
@@ -267,25 +268,25 @@ void transaction(double sum, double &from, double &to) {
 
 void giveCoffee() {
     cout << "_________Take your coffee! Have a nice day!_____" << endl;
-    cout << "______________1���������1_______________________" << endl;
-    cout << "_________1�������11_______1��������1____________" << endl;
-    cout << "________����1____________������������___________" << endl;
-    cout << "_______1����____________________����1__11�11____" << endl;
-    cout << "________�����11_______________1���1__��������1__" << endl;
-    cout << "_________�����������11111�������___���1___����__" << endl;
-    cout << "__________1�����������������1____����_____1���__" << endl;
-    cout << "___________1���1________________����_____1����__" << endl;
-    cout << "____________1����______________����__1�������___" << endl;
-    cout << "_____________1����____________1���___�������____" << endl;
-    cout << "______________1���____________���_____1111______" << endl;
-    cout << "__________1��������__________���________________" << endl;
-    cout << "______1��������11���________���__�������1_______" << endl;
-    cout << "___1������1_______����1__11���___���������______" << endl;
-    cout << "__1������__________1��������1_________1����_____" << endl;
-    cout << "__1�������____________________________����______" << endl;
-    cout << "____1��������1_____________________1����1_______" << endl;
-    cout << "_______1�������������111111111��������__________" << endl;
-    cout << "____________11�������������������11_____________" << endl;
+    cout << "______________1XXXXXXXXX1_______________________" << endl;
+    cout << "_________1XXXXXXX11_______1XXXXXXXX1____________" << endl;
+    cout << "________XXXX1____________XXXXXXXXXXXX___________" << endl;
+    cout << "_______1XXXX____________________XXXX1__11X11____" << endl;
+    cout << "________XXXXX11_______________1XXX1__XXXXXXXX1__" << endl;
+    cout << "_________XXXXXXXXXXX11111XXXXXXX___XXX1___XXXX__" << endl;
+    cout << "__________1XXXXXXXXXXXXXXXXX1____XXXX_____1XXX__" << endl;
+    cout << "___________1XXX1________________XXXX_____1XXXX__" << endl;
+    cout << "____________1XXXX______________XXXX__1XXXXXXX___" << endl;
+    cout << "_____________1XXXX____________1XXX___XXXXXXX____" << endl;
+    cout << "______________1XXX____________XXX_____1111______" << endl;
+    cout << "__________1XXXXXXXX__________XXX________________" << endl;
+    cout << "______1XXXXXXXX11XXX________XXX__XXXXXXX1_______" << endl;
+    cout << "___1XXXXXX1_______XXXX1__11XXX___XXXXXXXXX______" << endl;
+    cout << "__1XXXXXX__________1XXXXXXXX1_________1XXXX_____" << endl;
+    cout << "__1XXXXXXX____________________________XXXX______" << endl;
+    cout << "____1XXXXXXXX1_____________________1XXXX1_______" << endl;
+    cout << "_______1XXXXXXXXXXXXX111111111XXXXXXXX__________" << endl;
+    cout << "____________11XXXXXXXXXXXXXXXXXXX11_____________" << endl;
     cout << "________________________________________________" << endl;
 }
 
@@ -372,7 +373,7 @@ int inputPin() {
     cout << "Enter PIN (0 for exit): ";
 
     while (temp != 13) {
-//        temp = _getch();
+        temp = _getch();
 
         if (temp == 8) {
             if (counter > 0) {
@@ -407,13 +408,17 @@ void printLoading() {
             cout << "///";
         }
         cout << i * 10 << "%" << endl;
-//        Sleep(300);
+        Sleep(300);
     }
 }
 
-void changeBackgroundAndFontColor(char backgroundColor, char fontColor) {
-    const char *command = "color ";
-    system(command + backgroundColor + fontColor);
+void changeBackgroundAndFontColor(const char* backgroundColor, const char* fontColor) {
+    char command[9] = "color "; 
+
+    strcat_s(command, backgroundColor);
+    strcat_s(command, fontColor);
+
+    system(command);
 }
 
 void printConfirmationOfWithdrawnMoney(double withdrawnMoney) {
