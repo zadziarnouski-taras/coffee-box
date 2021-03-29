@@ -18,6 +18,14 @@
 #define LOCK_MACHINE 6
 #define NOT_ENOUGH_CUPS 7
 
+/**
+ * Color codes
+ * */
+#define BLACK 0
+#define BLUE 1
+#define RED 4
+#define BRIGHT_WHITE 'F'
+
 using namespace std;
 
 void printBalance(double material, string nameOfMaterial);
@@ -56,6 +64,10 @@ bool isEnoughCups(double totalBalance, int cups);
 
 void printLoading();
 
+void changeBackgroundAndFontColor(char backgroundColor, char fontColor);
+
+void printConfirmationOfWithdrawnMoney(double withdrawnMoney);
+
 int main() {
     int choice = 0, cups = 3, pin = 0, counter = 3;
     double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
@@ -63,11 +75,12 @@ int main() {
 
     while (true) {
         clearConsole();
-        system("color 0F");
+        changeBackgroundAndFontColor(BLACK, BRIGHT_WHITE);
+//        system("color 0F");
 
         if (cups == 0) {
             printWarning(NO_CUPS);
-        } 
+        }
         printBalance(balance, "money");
         printMenu();
 
@@ -98,7 +111,8 @@ int main() {
             clearConsole();
             while (counter > 0) {
                 clearConsole();
-                system("color 04");
+                changeBackgroundAndFontColor(BLACK, RED);
+//                system("color 04");
                 pin = inputPin();
 
                 if (pin) {
@@ -108,7 +122,8 @@ int main() {
                         while (true) {
                             counter = 3, pin = 0;
                             clearConsole();
-                            system("color F1");
+                            changeBackgroundAndFontColor(BRIGHT_WHITE, BLUE);
+//                            system("color F1");
                             printServiceMenu();
 
                             choice = inputNumber(choice);
@@ -130,16 +145,13 @@ int main() {
                                     transaction(balance, balance, moneyTakenOut);
                                 }
                                 if (moneyTakenOut > 0) {
-                                    cout << "Operation completed successfully !!! Money withdrawn: "
-                                         << moneyTakenOut   //maybe one more function
-                                         << " BYN"
-                                         << endl;
+                                    printConfirmationOfWithdrawnMoney(moneyTakenOut);
                                     moneyTakenOut = 0;
                                 } else {
                                     printWarning(NO_MONEY_IN_MACHINE);
                                 }
                                 pause();
-                            }  else {
+                            } else {
                                 break;
                             }
                         }
@@ -153,7 +165,8 @@ int main() {
                 }
             }
             if (counter == 0) {
-                system("color 40");
+//                system("color 40");
+                changeBackgroundAndFontColor(RED, BLACK);
                 lockMachine();
             }
         }
@@ -228,27 +241,26 @@ void transaction(double sum, double &from, double &to) {
 }
 
 void giveCoffee() {
-    cout << "____________*** Take your coffee! ***___________" << endl;
-    cout << "_______________Have a nice day!!!_______________" << endl;
-    cout << "______________1¶¶¶¶¶¶¶¶¶1_______________________" << endl;
-    cout << "_________1¶¶¶¶¶¶¶11_______1¶¶¶¶¶¶¶¶1____________" << endl;
-    cout << "________¶¶¶¶1____________¶¶¶¶¶¶¶¶¶¶¶¶___________" << endl;
-    cout << "_______1¶¶¶¶____________________¶¶¶¶1__11¶11____" << endl;
-    cout << "________¶¶¶¶¶11_______________1¶¶¶1__¶¶¶¶¶¶¶¶1__" << endl;
-    cout << "_________¶¶¶¶¶¶¶¶¶¶¶11111¶¶¶¶¶¶¶___¶¶¶1___¶¶¶¶__" << endl;
-    cout << "__________1¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶1____¶¶¶¶_____1¶¶¶__" << endl;
-    cout << "___________1¶¶¶1________________¶¶¶¶_____1¶¶¶¶__" << endl;
-    cout << "____________1¶¶¶¶______________¶¶¶¶__1¶¶¶¶¶¶¶___" << endl;
-    cout << "_____________1¶¶¶¶____________1¶¶¶___¶¶¶¶¶¶¶____" << endl;
-    cout << "______________1¶¶¶____________¶¶¶_____1111______" << endl;
-    cout << "__________1¶¶¶¶¶¶¶¶__________¶¶¶________________" << endl;
-    cout << "______1¶¶¶¶¶¶¶¶11¶¶¶________¶¶¶__¶¶¶¶¶¶¶1_______" << endl;
-    cout << "___1¶¶¶¶¶¶1_______¶¶¶¶1__11¶¶¶___¶¶¶¶¶¶¶¶¶______" << endl;
-    cout << "__1¶¶¶¶¶¶__________1¶¶¶¶¶¶¶¶1_________1¶¶¶¶_____" << endl;
-    cout << "__1¶¶¶¶¶¶¶____________________________¶¶¶¶______" << endl;
-    cout << "____1¶¶¶¶¶¶¶¶1_____________________1¶¶¶¶1_______" << endl;
-    cout << "_______1¶¶¶¶¶¶¶¶¶¶¶¶¶111111111¶¶¶¶¶¶¶¶__________" << endl;
-    cout << "____________11¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶11_____________" << endl;
+    cout << "_________Take your coffee! Have a nice day!_____" << endl;
+    cout << "______________1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1_______________________" << endl;
+    cout << "_________1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½11_______1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1____________" << endl;
+    cout << "________ï¿½ï¿½ï¿½ï¿½1____________ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½___________" << endl;
+    cout << "_______1ï¿½ï¿½ï¿½ï¿½____________________ï¿½ï¿½ï¿½ï¿½1__11ï¿½11____" << endl;
+    cout << "________ï¿½ï¿½ï¿½ï¿½ï¿½11_______________1ï¿½ï¿½ï¿½1__ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1__" << endl;
+    cout << "_________ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½11111ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½___ï¿½ï¿½ï¿½1___ï¿½ï¿½ï¿½ï¿½__" << endl;
+    cout << "__________1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1____ï¿½ï¿½ï¿½ï¿½_____1ï¿½ï¿½ï¿½__" << endl;
+    cout << "___________1ï¿½ï¿½ï¿½1________________ï¿½ï¿½ï¿½ï¿½_____1ï¿½ï¿½ï¿½ï¿½__" << endl;
+    cout << "____________1ï¿½ï¿½ï¿½ï¿½______________ï¿½ï¿½ï¿½ï¿½__1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½___" << endl;
+    cout << "_____________1ï¿½ï¿½ï¿½ï¿½____________1ï¿½ï¿½ï¿½___ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½____" << endl;
+    cout << "______________1ï¿½ï¿½ï¿½____________ï¿½ï¿½ï¿½_____1111______" << endl;
+    cout << "__________1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½__________ï¿½ï¿½ï¿½________________" << endl;
+    cout << "______1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½11ï¿½ï¿½ï¿½________ï¿½ï¿½ï¿½__ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1_______" << endl;
+    cout << "___1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1_______ï¿½ï¿½ï¿½ï¿½1__11ï¿½ï¿½ï¿½___ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½______" << endl;
+    cout << "__1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½__________1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1_________1ï¿½ï¿½ï¿½ï¿½_____" << endl;
+    cout << "__1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½____________________________ï¿½ï¿½ï¿½ï¿½______" << endl;
+    cout << "____1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1_____________________1ï¿½ï¿½ï¿½ï¿½1_______" << endl;
+    cout << "_______1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½111111111ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½__________" << endl;
+    cout << "____________11ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½11_____________" << endl;
     cout << "________________________________________________" << endl;
 }
 
@@ -331,11 +343,11 @@ void composeWarning(string warning) {
 
 int inputPin() {
     int pin = 0, temp = 0, counter = 0;
-    
+
     cout << "Enter PIN (0 for exit): ";
 
-    while (temp != 13){
-        temp = _getch();
+    while (temp != 13) {
+//        temp = _getch();
 
         if (temp == 8) {
             if (counter > 0) {
@@ -347,10 +359,10 @@ int inputPin() {
                 for (int i = 0; i < counter; i++) {
                     cout << "*";
                 }
-            }            
-        } else if (temp != 13){
+            }
+        } else if (temp != 13) {
             cout << "*";
-            pin = pin * 10 + (int)temp - 48;
+            pin = pin * 10 + (int) temp - 48;
             counter++;
         }
     }
@@ -369,15 +381,14 @@ double inputMoney(double balance, int cups) {
         cin >> moneyToInput;
 
         if (moneyToInput < 0) {
-             moneyToInput = 0; }
+            moneyToInput = 0;
+        }
 
         if (moneyToInput == 0) {
             break;
-        }
-        else if (isEnoughCups(balance + moneyToInput, cups)) {
+        } else if (isEnoughCups(balance + moneyToInput, cups)) {
             balance += moneyToInput;
-        }
-        else {
+        } else {
             do {
                 clearConsole();
                 printWarning(NOT_ENOUGH_CUPS);
@@ -387,8 +398,7 @@ double inputMoney(double balance, int cups) {
 
             if (choice) {
                 balance += moneyToInput;
-            }
-            else {
+            } else {
                 clearConsole();
                 cout << "Take your " << moneyToInput << " BYN" << endl;
                 pause();
@@ -396,22 +406,30 @@ double inputMoney(double balance, int cups) {
             }
         }
     }
-   
+
     return balance;
 }
 
-bool isEnoughCups(double totalBalance, int cups){
+bool isEnoughCups(double totalBalance, int cups) {
     return ESPRESSO_PRICE * cups >= totalBalance;
 }
 
-void printLoading()
-{
+void printLoading() {
     for (int i = 0; i < 11; i++) {
         clearConsole();
         for (int j = 0; j < i; j++) {
             cout << "///";
         }
         cout << i * 10 << "%" << endl;
-        Sleep(300);
+//        Sleep(300);
     }
+}
+
+void changeBackgroundAndFontColor(char backgroundColor, char fontColor) {
+    const char *command = "color ";
+    system(command + backgroundColor + fontColor);
+}
+
+void printConfirmationOfWithdrawnMoney(double withdrawnMoney) {
+    cout << "Operation completed successfully !!! Money withdrawn: " << withdrawnMoney << " BYN" << endl;
 }
