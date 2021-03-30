@@ -11,6 +11,7 @@
 /**
  * Warning codes
  * */
+
 #define NO_CUPS 1
 #define NOT_ENOUGH_MONEY 2
 #define NO_MONEY_IN_MACHINE 3
@@ -19,60 +20,60 @@
 #define LOCK_MACHINE 6
 #define NOT_ENOUGH_CUPS 7
 
- /**
-  * Color codes
-  * */
+/**
+ * Color codes
+ * */
 
-const char* BRIGHT_WHITE = "F";
-const char* BLACK = "0";
-const char* BLUE = "1";
-const char* RED = "4";
+const char *BRIGHT_WHITE = "F";
+const char *BLACK = "0";
+const char *BLUE = "1";
+const char *RED = "4";
 
 using namespace std;
 
+/**
+ * Print functions
+ * */
+
 void printBalance(double material, string nameOfMaterial);
-
 void printMenu();
-
-void pause();
-
-int inputNumber(int number);
-
-double inputMaterials(double material, string nameOfMaterial);
-
-double installPrice(int choice);
-
-void transaction(double sum, double &from, double &to);
-
-void giveCoffee();
-
 void printServiceMenu();
-
-void clearConsole();
-
-void lockMachine();
-
-bool checkPin(int pin);
-
+void printLoading();
+void printConfirmationOfWithdrawnMoney(double withdrawnMoney);
 void printWarning(int warningCode);
 
-void composeWarning(string warning);
+/**
+ * Input functions
+ * */
 
+int inputNumber(int number);
+double inputMaterials(double material, string nameOfMaterial);
 int inputPin();
-
 double inputMoney(double balance, int cups);
 
+/**
+ * System functions
+ * */
+
+void pause();
+void clearConsole();
+void changeBackgroundAndFontColor(const char *backgroundColor, const char *fontColor);
+
+/**
+ * Special functions
+ * */
+
+double installPrice(int choice);
+void transaction(double sum, double &from, double &to);
+void giveCoffee();
+void lockMachine();
+bool checkPin(int pin);
+void composeWarning(string warning);
 bool isEnoughCups(double totalBalance, int cups);
 
-void printLoading();
-
-void changeBackgroundAndFontColor(const char* backgroundColor, const char* fontColor);
-
-void printConfirmationOfWithdrawnMoney(double withdrawnMoney);
-
 int main() {
-    int choice = 0, cups = 3, pin = 0, counter = 3;
-    double balance = 0, price = 0, balanceInMachine = 0, moneyTakenOut = 0;
+    int choice = 0, cups = 3, pin, counter = 3;
+    double balance = 0, price, balanceInMachine = 0, moneyTakenOut = 0;
     bool isFromServiceMenu = false;
 
     while (true) {
@@ -81,7 +82,7 @@ int main() {
 
         if (cups == 0) {
             printWarning(NO_CUPS);
-        } 
+        }
         printBalance(balance, "money");
         printMenu();
 
@@ -150,7 +151,7 @@ int main() {
                                     printWarning(NO_MONEY_IN_MACHINE);
                                 }
                                 pause();
-                            }  else {
+                            } else {
                                 break;
                             }
                         }
@@ -341,10 +342,10 @@ void composeWarning(string warning) {
 
 int inputPin() {
     int pin = 0, temp = 0, counter = 0;
-    
+
     cout << "Enter PIN (0 for exit): ";
 
-    while (temp != 13){
+    while (temp != 13) {
         temp = _getch();
 
         if (temp == 8) {
@@ -357,10 +358,10 @@ int inputPin() {
                 for (int i = 0; i < counter; i++) {
                     cout << "*";
                 }
-            }            
-        } else if (temp != 13){
+            }
+        } else if (temp != 13) {
             cout << "*";
-            pin = pin * 10 + (int)temp - 48;
+            pin = pin * 10 + (int) temp - 48;
             counter++;
         }
     }
@@ -379,15 +380,14 @@ double inputMoney(double balance, int cups) {
         cin >> moneyToInput;
 
         if (moneyToInput < 0) {
-             moneyToInput = 0; }
+            moneyToInput = 0;
+        }
 
         if (moneyToInput == 0) {
             break;
-        }
-        else if (isEnoughCups(balance + moneyToInput, cups)) {
+        } else if (isEnoughCups(balance + moneyToInput, cups)) {
             balance += moneyToInput;
-        }
-        else {
+        } else {
             do {
                 clearConsole();
                 printWarning(NOT_ENOUGH_CUPS);
@@ -397,8 +397,7 @@ double inputMoney(double balance, int cups) {
 
             if (choice) {
                 balance += moneyToInput;
-            }
-            else {
+            } else {
                 clearConsole();
                 cout << "Take your " << moneyToInput << " BYN" << endl;
                 pause();
@@ -406,16 +405,15 @@ double inputMoney(double balance, int cups) {
             }
         }
     }
-   
+
     return balance;
 }
 
-bool isEnoughCups(double totalBalance, int cups){
+bool isEnoughCups(double totalBalance, int cups) {
     return ESPRESSO_PRICE * cups >= totalBalance;
 }
 
-void printLoading()
-{
+void printLoading() {
     for (int i = 0; i < 11; i++) {
         clearConsole();
         for (int j = 0; j < i; j++) {
@@ -426,7 +424,7 @@ void printLoading()
     }
 }
 
-void changeBackgroundAndFontColor(const char* backgroundColor, const char* fontColor) {
+void changeBackgroundAndFontColor(const char *backgroundColor, const char *fontColor) {
     char command[9] = "color ";
 
     strcat_s(command, backgroundColor);
